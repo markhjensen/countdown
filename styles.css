@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700');
+
+:root {
+    --timer-unit: 1s;
+    --timer-length: 2;
+    --timer-delay: 1s;
+    --bg-hue: 160;
+    --hue-increment: calc(360 / var(--timer-length));
+    --transparency: 0.125;
+}
+
+@keyframes number_pulse {
+    0%, 100% {
+    transform: scale(1);
+    }
+    50% {
+    transform: scale(1.2);
+    }
+}
+
+@keyframes timer_indicator {
+    0% {
+        transform: scaleY(100%);
+        transform-origin: bottom;
+
+    }
+    100% {
+        transform: scaleY(0%);
+        transform-origin: bottom;
+    }
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #47ebb4;
+    color: white;
+}
+
+p {
+    font-size: 5vmin;
+}
+
+.number {
+    animation: number_pulse 1s infinite;
+}
+
+.countdown {
+    width: 50vmin; /* Relative to the smaller dimension of the viewport */
+    height: 50vmin; /* Relative to the smaller dimension of the viewport */
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8vmin; /* Adjust the font size */
+    font-weight: bold;
+    font-size: 25vmin;
+    box-shadow: 0 0 0 1.25vmin, inset 2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125), 2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125);
+    text-shadow:2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125);
+    position: relative; /* Add relative positioning */
+    z-index: 1; /* Set z-index to place it below .number */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% calc(100% - var(--timer-delay)));
+    overflow: hidden; /* Clip the content inside the circular shape */
+}
+
+.countdown::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, var(--transparency));
+    z-index: -1;
+    animation: timer_indicator calc(var(--timer-length) * var(--timer-unit)) linear 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% calc(100% - var(--timer-delay)));
+}
+
+.animation-paused {
+    animation: none !important;
+}
